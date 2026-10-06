@@ -1,0 +1,107 @@
+```mermaid
+erDiagram
+    STUDENTS ||--o{ COMPLAINTS : submits
+    STUDENTS ||--o{ MESS_REVIEWS : writes
+    TECHNICIANS ||--o{ COMPLAINTS : assigned_to
+    COMPLAINTS ||--o{ COMPLAINT_MESSAGES : contains
+
+    STUDENTS {
+        int id PK
+        string student_id UK
+        string full_name
+        string email UK
+        string password_hash
+        string mobile
+        string hostel_name
+        string room_number
+        timestamp created_at
+    }
+
+    ADMINS {
+        int id PK
+        string full_name
+        string email UK
+        string password_hash
+        string status
+        timestamp created_at
+    }
+
+    TECHNICIANS {
+        string id PK
+        string name
+        string role
+        string phone
+        decimal rating
+        int jobs_completed
+        string avatar_url
+        string specialty
+    }
+
+    COMPLAINTS {
+        int id PK
+        int student_id FK
+        string title
+        string category
+        text description
+        string hostel_name
+        string room_number
+        string priority
+        string status
+        string tracker_stage
+        string technician_id FK
+        string resolution_otp
+        boolean otp_verified
+        text admin_response
+        string image_url
+        string preferred_visit_time
+        string key_status
+        boolean call_before_entry
+        timestamp created_at
+    }
+
+    COMPLAINT_MESSAGES {
+        int id PK
+        int complaint_id FK
+        string sender_role
+        string sender_name
+        text message_text
+        boolean is_voice_note
+        string audio_duration
+        timestamp created_at
+    }
+
+    MESS_MENUS {
+        int id PK
+        string day_of_week
+        string meal_type
+        text menu_items
+        string estimated_calories
+    }
+
+    MESS_REVIEWS {
+        int id PK
+        int student_id FK
+        string hostel_name
+        string meal_type
+        string meal_name
+        date review_date
+        int taste_rating
+        int hygiene_rating
+        int freshness_rating
+        int portions_rating
+        decimal overall_score
+        json issue_tags
+        text comment
+        boolean contractor_flagged
+        timestamp created_at
+    }
+
+    MESS_CONTRACTOR_ACTIONS {
+        int id PK
+        string admin_name
+        string title
+        text description
+        string action_type
+        timestamp created_at
+    }
+```

@@ -1,0 +1,40 @@
+services:
+  # ----------------------------------------------------
+  # 1. FRONTEND: React Single Page Application
+  # ----------------------------------------------------
+  - type: web
+    name: hostelops-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_USE_MOCK
+        value: "true"
+      - key: REACT_APP_API_URL
+        value: ""
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  # ----------------------------------------------------
+  # 2. BACKEND: Django REST API Service
+  # ----------------------------------------------------
+  - type: web
+    name: hostelops-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && python manage.py migrate
+    startCommand: gunicorn hcms_backend.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.12
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: DB_ENGINE
+        value: "sqlite"
+      - key: SECRET_KEY
+        generateValue: true
